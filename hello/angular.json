@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "projeto-air": {
+    "hello": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -23,7 +23,12 @@
             ],
             "styles": [
               "src/styles.css"
-            ]
+            ],
+            "server": "src/main.server.ts",
+            "outputMode": "server",
+            "ssr": {
+              "entry": "src/server.ts"
+            }
           },
           "configurations": {
             "production": {
@@ -53,10 +58,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "projeto-air:build:production"
+              "buildTarget": "hello:build:production"
             },
             "development": {
-              "buildTarget": "projeto-air:build:development"
+              "buildTarget": "hello:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -83,6 +88,6 @@
     }
   },
   "cli": {
-    "analytics": "dc562542-127a-44c7-9f0b-492561448b21"
+    "analytics": false
   }
 }
