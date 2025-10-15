@@ -4,17 +4,11 @@ import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
-  templateUrl: './app.html',
+  imports: [RouterOutlet, ButtonModule],
+  template: `<p-button label="Check" />`,
   styleUrl: './app.css'
 })
 export class App {
   protected readonly title = signal('hello');
 }
 
-// @Component({
-//     selector: 'button-demo',
-//     templateUrl: './button-demo.html',
-//     imports: [ButtonModule]
-// })
-// export class ButtonDemo {}
