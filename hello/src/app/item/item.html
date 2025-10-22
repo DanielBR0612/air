@@ -1,0 +1,11 @@
+<div class="mb-4 p-8">
+    <p-card class="!bg-white !text-purple-600">
+        <ng-template pTemplate="header">
+            <div class="flex items-center justify-between p-card-title px-5 pt-5 gap-4"> 
+                <span>{{ titulo }}</span> <!-- Exibe o título -->
+                <i (click)="removerItem()" class="pi pi-times cursor-pointer text-red-700"></i> 
+            </div>
+        </ng-template>
+        <p class="m-0 !text-black">{{descricao}}</p>
+    </p-card>
+</div>
