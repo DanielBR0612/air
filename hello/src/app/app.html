@@ -1,5 +1,5 @@
 <app-titulo></app-titulo>
-<app-form (itemSalvo)="adicionarNovoItem($event)"></app-form>
+<app-form #formComp (itemSalvo)="salvarOuAtualizarItem($event)"></app-form>
 
 <hr class="my-4">
 
@@ -9,7 +9,8 @@
       (remover)="removerCard($event)"
       [titulo]="item.titulo" 
       [descricao]="item.descricao" 
-      [index]="$index">
+      [index]="$index"
+      (editar)="abrirDialogoEdicao(item, $index, formComp)"> 
     </app-item>
   }
 </div>

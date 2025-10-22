@@ -1,8 +1,20 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, Input } from '@angular/core'; 
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
+
+export interface FormPayload {
+  titulo: string;
+  descricao: string;
+  index?: number; 
+}
+
+interface ItemParaEditar {
+    titulo: string;
+    descricao: string;
+    index: number;
+}
 
 @Component({
     selector: 'app-form',
@@ -12,29 +24,49 @@ import { FormsModule } from '@angular/forms';
 })
 export class Form {
     visible: boolean = false;
-    titulo: string = '';
-    descricao: string ='';
-    index: number = 0;
+    titulo: string = ''; 
+    descricao: string = ''; 
 
-    @Output() itemSalvo = new EventEmitter<{ titulo: string; descricao: string; index: number}>();
+    private indiceEditando: number | null = null; 
 
-    showDialog() {
+    @Output() itemSalvo = new EventEmitter<FormPayload>();
+
+    get tituloDialogo(): string {
+        return this.indiceEditando === null ? 'Adicionar Novo Item' : 'Editar Item';
+    }
+
+    abrirParaAdicionar() {
+      this.indiceEditando = null; 
       this.titulo = ''; 
       this.descricao = ''; 
       this.visible = true;
     }
 
-    salvarItem() {
+    abrirParaEditar(item: ItemParaEditar) {
+        this.indiceEditando = item.index;
+        this.titulo = item.titulo; 
+        this.descricao = item.descricao;
+        this.visible = true;
+    }
+
+    salvar() {
         if (this.titulo && this.titulo.trim() !== '' && this.descricao && this.descricao.trim() !== '') {
-          console.log('Tentando salvar. Título atual:', this.titulo, 'Descrição atual:', this.descricao);
-            this.itemSalvo.emit({ 
+            const payload: FormPayload = { 
                 titulo: this.titulo.trim(), 
-                descricao: this.descricao.trim(), 
-                index: this.index 
-            });
+                descricao: this.descricao.trim() 
+            };
+            if (this.indiceEditando !== null) { 
+              payload.index = this.indiceEditando; 
+          }
+            this.itemSalvo.emit(payload);
             this.visible = false; 
         } else {
           console.warn("Não podem ter campos vazios");
         }
     }  
-  }
+
+    cancelar() {
+      this.visible = false;
+    }
+}
+

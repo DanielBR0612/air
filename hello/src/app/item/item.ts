@@ -1,12 +1,14 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CardModule } from 'primeng/card';
-import { CommonModule } from '@angular/common';
+import { CommonModule } from '@angular/common'; 
+import { ButtonModule } from 'primeng/button'; 
 
 @Component({
     selector: 'app-item', 
     templateUrl: './item.html',
     standalone: true,
-    imports: [CardModule, CommonModule] 
+
+    imports: [CardModule, CommonModule, ButtonModule] 
 })
 export class Item { 
   @Input() titulo: string = '';
@@ -15,13 +17,19 @@ export class Item {
 
   @Output() remover = new EventEmitter<number>(); 
 
+  @Output() editar = new EventEmitter<number>(); 
+
   removerItem() {
     if (this.index > -1) { 
-      console.log('Item component emitting removal for index:', this.index);
       this.remover.emit(this.index);
     } else {
-      console.warn('Cannot remove item: index is invalid', this.index);
+      console.warn('Index invalido', this.index);
     }
+  }
+
+
+  solicitarEdicao() {
+    this.editar.emit(this.index);
   }
 }
 
