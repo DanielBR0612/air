@@ -70,7 +70,6 @@ export class App {
   }
 
   onLidoChange(event: {index: number, lido: boolean}) {
-  // Update your data structure with the new lido value
   this.items[event.index].lido = event.lido;
 }
 
