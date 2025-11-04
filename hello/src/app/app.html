@@ -10,7 +10,9 @@
       [titulo]="item.titulo" 
       [descricao]="item.descricao" 
       [index]="$index"
-      (editar)="abrirDialogoEdicao(item, $index, formComp)"> 
+      (editar)="abrirDialogoEdicao(item, $index, formComp)"
+      [lido]="item.lido"
+      (lidoChange)="onLidoChange($event)">
     </app-item>
   }
 </div>

@@ -25,6 +25,10 @@
       <label for="descricao" class="font-semibold w-24">Descrição</label>
       <input pInputText id="descricao" class="flex-auto" autocomplete="off" [(ngModel)]="descricao" /> 
     </div>
+    <div class="flex flex-row gap-3 items-center">
+          <p-checkbox [(ngModel)]="lido" [binary]="true" />
+          <p class="text-gray-600">Lido</p>
+        </div>
     <div class="flex justify-end gap-2">
       <p-button label="Cancel" severity="secondary" (click)="cancelar()" /> 
       <p-button label="Save" (click)="salvar()" /> 

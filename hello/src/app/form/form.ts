@@ -3,11 +3,13 @@ import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
+import { CheckboxModule } from 'primeng/checkbox';
 
 export interface FormPayload {
   titulo: string;
   descricao: string;
   index?: number; 
+  lido: boolean;
 }
 
 interface ItemParaEditar {
@@ -20,12 +22,13 @@ interface ItemParaEditar {
     selector: 'app-form',
     templateUrl: './form.html',
     standalone: true,
-    imports: [DialogModule, ButtonModule, InputTextModule, FormsModule]
+    imports: [DialogModule, ButtonModule, InputTextModule, FormsModule, CheckboxModule]
 })
 export class Form {
     visible: boolean = false;
     titulo: string = ''; 
     descricao: string = ''; 
+    lido: boolean = false;
 
     private indiceEditando: number | null = null; 
 
@@ -53,7 +56,8 @@ export class Form {
         if (this.titulo && this.titulo.trim() !== '' && this.descricao && this.descricao.trim() !== '') {
             const payload: FormPayload = { 
                 titulo: this.titulo.trim(), 
-                descricao: this.descricao.trim() 
+                descricao: this.descricao.trim(), 
+                lido: this.lido
             };
             if (this.indiceEditando !== null) { 
               payload.index = this.indiceEditando; 

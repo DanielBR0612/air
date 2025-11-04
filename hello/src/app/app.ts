@@ -1,5 +1,4 @@
 import { Component, signal, WritableSignal } from '@angular/core'; 
-import { RouterOutlet } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { PanelModule } from 'primeng/panel';
 import { MenubarModule } from 'primeng/menubar';
@@ -12,6 +11,7 @@ import { CommonModule } from '@angular/common';
 interface CardItem {
   titulo: string;
   descricao: string;
+  lido: boolean;
 }
 
 @Component({
@@ -30,9 +30,9 @@ interface CardItem {
   templateUrl: './app.html', 
   styleUrl: './app.css', 
 })
+
 export class App {
-  protected readonly title = signal('Daniel');
-  protected qtd = signal(0);
+
   items: any[] = []; 
 
   listaDeCards: WritableSignal<CardItem[]> = signal([]); 
@@ -47,7 +47,7 @@ export class App {
           this.listaDeCards.update(cardsAtuais => {
               return cardsAtuais.map((card, idx) => {
                   if (idx === payload.index) {
-                      return { titulo: payload.titulo, descricao: payload.descricao };
+                      return { titulo: payload.titulo, descricao: payload.descricao, lido: payload.lido };
                   }
                   return card; 
               });
@@ -55,7 +55,7 @@ export class App {
       } else {
           this.listaDeCards.update(cardsAtuais => {
               if (!cardsAtuais.some(card => card.titulo === payload.titulo)) {
-                return [...cardsAtuais, { titulo: payload.titulo, descricao: payload.descricao }]; 
+                return [...cardsAtuais, { titulo: payload.titulo, descricao: payload.descricao, lido: payload.lido }]; 
               } else {
                 return cardsAtuais; 
               }
@@ -69,8 +69,10 @@ export class App {
     );
   }
 
-  incrementar() {
-    this.qtd.update(q => q + 1);
-  }
+  onLidoChange(event: {index: number, lido: boolean}) {
+  // Update your data structure with the new lido value
+  this.items[event.index].lido = event.lido;
+}
+
 }
 
