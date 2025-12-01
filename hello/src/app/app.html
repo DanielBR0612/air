@@ -10,8 +10,6 @@
       [titulo]="item.titulo" 
       [descricao]="item.descricao" 
       [index]="$index"
-      (editar)="abrirDialogoEdicao(item, $index, formComp)"> 
-    </app-item>
+      (editar)="abrirDialogoEdicao($index, formComp)"> </app-item>
   }
 </div>
-

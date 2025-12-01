@@ -1,4 +1,4 @@
-import { Component, signal, WritableSignal } from '@angular/core'; 
+import { Component, signal, WritableSignal, inject } from '@angular/core'; 
 import { RouterOutlet } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { PanelModule } from 'primeng/panel';
@@ -8,6 +8,8 @@ import { Titulo } from './titulo/titulo';
 import { Form, FormPayload } from './form/form'; 
 import { Item } from './item/item'; 
 import { CommonModule } from '@angular/common'; 
+
+import { ItemService } from './services/item.service';
 
 interface CardItem {
   titulo: string;
@@ -31,46 +33,35 @@ interface CardItem {
   styleUrl: './app.css', 
 })
 export class App {
+  private itemService = inject(ItemService);
+
+  listaDeCards = this.itemService.listaDeCards;
+
   protected readonly title = signal('Daniel');
   protected qtd = signal(0);
-  items: any[] = []; 
 
-  listaDeCards: WritableSignal<CardItem[]> = signal([]); 
+  abrirDialogoEdicao(index: number, formComponent: Form) {
 
-  abrirDialogoEdicao(item: CardItem, index: number, formComponent: Form) {
-      formComponent.abrirParaEditar({ ...item, index }); 
-  }
-
-  salvarOuAtualizarItem(payload: FormPayload) {
+      const item = this.itemService.detalhar(index);
       
-      if (typeof payload.index === 'number' && payload.index >= 0) {
-          this.listaDeCards.update(cardsAtuais => {
-              return cardsAtuais.map((card, idx) => {
-                  if (idx === payload.index) {
-                      return { titulo: payload.titulo, descricao: payload.descricao };
-                  }
-                  return card; 
-              });
-          });
-      } else {
-          this.listaDeCards.update(cardsAtuais => {
-              if (!cardsAtuais.some(card => card.titulo === payload.titulo)) {
-                return [...cardsAtuais, { titulo: payload.titulo, descricao: payload.descricao }]; 
-              } else {
-                return cardsAtuais; 
-              }
-          });
+      if (item) {
+          formComponent.abrirParaEditar({ ...item, index }); 
       }
   }
 
-  removerCard(indexRemover: number) {
-    this.listaDeCards.update(cardsAtuais => 
-        cardsAtuais.filter((card, index) => index !== indexRemover) 
-    );
+  salvarOuAtualizarItem(payload: FormPayload) {
+      this.itemService.salvarOuAtualizar(
+          payload.titulo, 
+          payload.descricao, 
+          payload.index
+      );
+  }
+
+  removerCard(index: number) {
+    this.itemService.remover(index);
   }
 
   incrementar() {
     this.qtd.update(q => q + 1);
   }
 }
-
