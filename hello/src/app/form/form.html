@@ -1,33 +1,47 @@
-<div class="card flex justify-center !bg-gray-100">
+<div class="flex justify-center mt-10">
+  <p-card 
+    [header]="modoEdicao ? 'Editar Tarefa' : 'Nova Tarefa'" 
+    [style]="{ width: '400px' }" 
+    styleClass="shadow-lg">
 
-  <p-button
-    (click)="abrirParaAdicionar()" 
-    label="Adicionar item"
-    icon="pi pi-plus"
-    iconPos="right"
-    styleClass="!text-white !bg-purple-600 !border-transparent"
-    class="flex justify-center items-center mt-15"
-  />
+    <div class="flex flex-col gap-4">
+      <div class="flex flex-col gap-2">
+        <label for="titulo" class="font-bold">Título</label>
+        <input 
+          pInputText 
+          id="titulo" 
+          [(ngModel)]="titulo" 
+          placeholder="Digite o título" 
+          autofocus />
+      </div>
 
-  <p-dialog
-    [header]="tituloDialogo" 
-    [modal]="true"
-    [(visible)]="visible"
-    [style]="{ width: '30rem' }"
-    [contentStyle]="{ 'overflow-x': 'hidden' }"
-  >
-    <span class="p-text-secondary block mb-8">Preencha as informações do item.</span>
-    <div class="flex items-center gap-4 mb-4">
-      <label for="titulo" class="font-semibold w-24">Título</label>
-      <input pInputText id="titulo" class="flex-auto" autocomplete="off" [(ngModel)]="titulo" /> 
+      <div class="flex flex-col gap-2">
+        <label for="descricao" class="font-bold">Descrição</label>
+        <textarea 
+          pInputTextarea 
+          id="descricao" 
+          [(ngModel)]="descricao" 
+          rows="5" 
+          placeholder="Detalhes da tarefa..."></textarea>
+      </div>
     </div>
-    <div class="flex items-center gap-4 mb-8">
-      <label for="descricao" class="font-semibold w-24">Descrição</label>
-      <input pInputText id="descricao" class="flex-auto" autocomplete="off" [(ngModel)]="descricao" /> 
-    </div>
-    <div class="flex justify-end gap-2">
-      <p-button label="Cancel" severity="secondary" (click)="cancelar()" /> 
-      <p-button label="Save" (click)="salvar()" /> 
-    </div>
-  </p-dialog>
+
+    <ng-template pTemplate="footer">
+      <div class="flex justify-end gap-2">
+        <p-button 
+          label="Cancelar" 
+          severity="secondary" 
+          icon="pi pi-times" 
+          (click)="cancelar()">
+        </p-button>
+        
+        <p-button 
+          label="Salvar" 
+          icon="pi pi-check" 
+          (click)="salvar()">
+        </p-button>
+      </div>
+    </ng-template>
+
+  </p-card>
 </div>

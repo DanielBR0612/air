@@ -1,72 +1,59 @@
-import { Component, Output, EventEmitter, Input } from '@angular/core'; 
-import { DialogModule } from 'primeng/dialog';
+import { Component, inject, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router'; 
+import { ItemService } from '../services/item.service';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
-import { FormsModule } from '@angular/forms';
-
-export interface FormPayload {
-  titulo: string;
-  descricao: string;
-  index?: number; 
-}
-
-interface ItemParaEditar {
-    titulo: string;
-    descricao: string;
-    index: number;
-}
+import { CardModule } from 'primeng/card'; 
 
 @Component({
-    selector: 'app-form',
-    templateUrl: './form.html',
-    standalone: true,
-    imports: [DialogModule, ButtonModule, InputTextModule, FormsModule]
+  selector: 'app-form',
+  standalone: true,
+  imports: [
+    CommonModule, 
+    FormsModule, 
+    ButtonModule, 
+    InputTextModule, 
+    CardModule 
+  ],
+  templateUrl: './form.html'
 })
-export class Form {
-    visible: boolean = false;
-    titulo: string = ''; 
-    descricao: string = ''; 
+export class Form implements OnInit { 
+  private itemService = inject(ItemService);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
 
-    private indiceEditando: number | null = null; 
+  titulo: string = '';
+  descricao: string = '';
+  index: number | null = null;
+  modoEdicao = false;
 
-    @Output() itemSalvo = new EventEmitter<FormPayload>();
+  ngOnInit() {
+    const idRota = this.route.snapshot.paramMap.get('id');
 
-    get tituloDialogo(): string {
-        return this.indiceEditando === null ? 'Adicionar Novo Item' : 'Editar Item';
-    }
-
-    abrirParaAdicionar() {
-      this.indiceEditando = null; 
-      this.titulo = ''; 
-      this.descricao = ''; 
-      this.visible = true;
-    }
-
-    abrirParaEditar(item: ItemParaEditar) {
-        this.indiceEditando = item.index;
-        this.titulo = item.titulo; 
+    if (idRota !== null) {
+      this.index = Number(idRota);
+      this.modoEdicao = true;
+      
+      const item = this.itemService.detalhar(this.index);
+      if (item) {
+        this.titulo = item.titulo;
         this.descricao = item.descricao;
-        this.visible = true;
+      }
     }
+  }
 
-    salvar() {
-        if (this.titulo && this.titulo.trim() !== '' && this.descricao && this.descricao.trim() !== '') {
-            const payload: FormPayload = { 
-                titulo: this.titulo.trim(), 
-                descricao: this.descricao.trim() 
-            };
-            if (this.indiceEditando !== null) { 
-              payload.index = this.indiceEditando; 
-          }
-            this.itemSalvo.emit(payload);
-            this.visible = false; 
-        } else {
-          console.warn("Não podem ter campos vazios");
-        }
-    }  
-
-    cancelar() {
-      this.visible = false;
+  salvar() {
+    if (this.modoEdicao && this.index !== null) {
+      this.itemService.salvarOuAtualizar(this.titulo, this.descricao, this.index);
+    } else {
+      this.itemService.salvarOuAtualizar(this.titulo, this.descricao);
     }
+    this.router.navigate(['/listar']);
+  }
+
+  cancelar() {
+    this.router.navigate(['/listar']);
+  }
 }
-

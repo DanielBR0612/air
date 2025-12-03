@@ -1,15 +1,15 @@
 <app-titulo></app-titulo>
-<app-form #formComp (itemSalvo)="salvarOuAtualizarItem($event)"></app-form>
 
-<hr class="my-4">
+<nav class="flex gap-4 p-4 bg-gray-100 mb-4 border-b border-gray-300">
+    <a routerLink="/listar" class="text-blue-600 font-bold hover:underline">
+        <i class="pi pi-list"></i> Listagem
+    </a>
+    
+    <a routerLink="/novo" class="text-green-600 font-bold hover:underline">
+        <i class="pi pi-plus"></i> Novo Item
+    </a>
+</nav>
 
-<div class="flex flex-wrap gap-4 p-4 justify-center">
-  @for (item of listaDeCards(); track $index) {
-    <app-item 
-      (remover)="removerCard($event)"
-      [titulo]="item.titulo" 
-      [descricao]="item.descricao" 
-      [index]="$index"
-      (editar)="abrirDialogoEdicao($index, formComp)"> </app-item>
-  }
-</div>
+<router-outlet></router-outlet>
+
+<p-toast></p-toast>
