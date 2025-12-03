@@ -1,0 +1,12 @@
+<div class="flex flex-wrap gap-4 justify-center">
+  @for (item of listaDeCards(); track $index) {
+    <a [routerLink]="['/detalhe', $index]" class="no-underline block">
+      
+      <app-item 
+        [titulo]="item.titulo" 
+        [descricao]="item.descricao">
+      </app-item>
+
+    </a>
+  }
+</div>

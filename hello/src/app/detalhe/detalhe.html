@@ -1,0 +1,23 @@
+<div class="p-6 bg-white shadow rounded-lg max-w-lg mx-auto mt-10" *ngIf="item">
+  
+  <h1 class="text-3xl font-bold text-gray-800 mb-4">{{ item.titulo }}</h1>
+  <p class="text-gray-600 text-lg mb-6">{{ item.descricao }}</p>
+
+  <div class="mt-6 flex gap-4 items-center">
+    <a routerLink="/listar" class="text-blue-500 hover:underline cursor-pointer">
+      Voltar
+    </a>
+    
+    <a [routerLink]="['/editar', index]" class="text-yellow-600 hover:underline cursor-pointer">
+      Editar
+    </a>
+
+    <button (click)="excluir()" class="text-red-500 hover:underline cursor-pointer bg-transparent border-none">
+      Excluir
+    </button>
+  </div>
+</div>
+
+<div *ngIf="!item" class="text-center text-red-500 mt-10">
+  Item não encontrado.
+</div>

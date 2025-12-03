@@ -7,7 +7,6 @@ import { ButtonModule } from 'primeng/button';
     selector: 'app-item', 
     templateUrl: './item.html',
     standalone: true,
-
     imports: [CardModule, CommonModule, ButtonModule] 
 })
 export class Item { 
@@ -16,20 +15,16 @@ export class Item {
   @Input() index: number = -1; 
 
   @Output() remover = new EventEmitter<number>(); 
-
   @Output() editar = new EventEmitter<number>(); 
 
-  removerItem() {
+  removerItem(event: Event) {
+    event.preventDefault();  
+    event.stopPropagation(); 
+
     if (this.index > -1) { 
       this.remover.emit(this.index);
     } else {
       console.warn('Index invalido', this.index);
     }
   }
-
-
-  solicitarEdicao() {
-    this.editar.emit(this.index);
-  }
 }
-

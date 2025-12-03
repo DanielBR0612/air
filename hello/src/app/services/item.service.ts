@@ -9,7 +9,9 @@ export class ItemService {
   private cardsSignal: WritableSignal<Item[]> = signal([]);
   readonly listaDeCards = this.cardsSignal.asReadonly();
 
-  constructor() { }
+  constructor() { 
+    console.log('⚠️ ATENÇÃO: O Service foi (re)criado! ⚠️');
+  }
 
   salvarOuAtualizar(titulo: string, descricao: string, index?: number) {
     if (typeof index === 'number' && index >= 0) {
