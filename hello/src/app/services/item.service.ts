@@ -1,17 +1,12 @@
 import { Injectable, signal, WritableSignal } from '@angular/core';
-
-export interface CardItem {
-  titulo: string;
-  descricao: string;
-}
+import { Item } from '../models/item.model'; 
 
 @Injectable({
   providedIn: 'root'
 })
 export class ItemService {
 
-  private cardsSignal: WritableSignal<CardItem[]> = signal([]);
-
+  private cardsSignal: WritableSignal<Item[]> = signal([]);
   readonly listaDeCards = this.cardsSignal.asReadonly();
 
   constructor() { }
@@ -21,7 +16,7 @@ export class ItemService {
       this.cardsSignal.update(cards => {
         return cards.map((card, idx) => {
           if (idx === index) {
-            return { titulo, descricao };
+            return { ...card, titulo, descricao }; 
           }
           return card;
         });
@@ -30,7 +25,7 @@ export class ItemService {
       this.cardsSignal.update(cards => {
         const jaExiste = cards.some(card => card.titulo === titulo);
         if (!jaExiste) {
-          return [...cards, { titulo, descricao }];
+          return [...cards, { titulo, descricao, lido: false }]; 
         }
         return cards;
       });
@@ -43,7 +38,7 @@ export class ItemService {
     );
   }
 
-  detalhar(index: number): CardItem | undefined {
+  detalhar(index: number): Item | undefined {
     const cards = this.cardsSignal();
     return cards[index];
   }

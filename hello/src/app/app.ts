@@ -37,9 +37,6 @@ export class App {
 
   listaDeCards = this.itemService.listaDeCards;
 
-  protected readonly title = signal('Daniel');
-  protected qtd = signal(0);
-
   abrirDialogoEdicao(index: number, formComponent: Form) {
 
       const item = this.itemService.detalhar(index);
@@ -59,9 +56,5 @@ export class App {
 
   removerCard(index: number) {
     this.itemService.remover(index);
-  }
-
-  incrementar() {
-    this.qtd.update(q => q + 1);
   }
 }
