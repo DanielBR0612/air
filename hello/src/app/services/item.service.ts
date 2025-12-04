@@ -10,10 +10,9 @@ export class ItemService {
   readonly listaDeCards = this.cardsSignal.asReadonly();
 
   constructor() { 
-    console.log('⚠️ ATENÇÃO: O Service foi (re)criado! ⚠️');
   }
 
-  salvarOuAtualizar(titulo: string, descricao: string, index?: number) {
+  salvarOuAtualizar(titulo: string, descricao: string, index?: number): boolean {
     if (typeof index === 'number' && index >= 0) {
       this.cardsSignal.update(cards => {
         return cards.map((card, idx) => {
@@ -23,14 +22,21 @@ export class ItemService {
           return card;
         });
       });
-    } else {
-      this.cardsSignal.update(cards => {
-        const jaExiste = cards.some(card => card.titulo === titulo);
-        if (!jaExiste) {
-          return [...cards, { titulo, descricao, lido: false }]; 
-        }
-        return cards;
-      });
+      return true; 
+    } 
+    else {
+      const cardsAtuais = this.cardsSignal();
+      
+      const jaExiste = cardsAtuais.some(card => card.titulo === titulo);
+
+      if (jaExiste) {
+        return false; 
+      }
+      this.cardsSignal.update(cards => 
+        [...cards, { titulo, descricao, lido: false }]
+      );
+      
+      return true; 
     }
   }
 

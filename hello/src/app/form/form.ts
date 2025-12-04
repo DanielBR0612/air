@@ -6,6 +6,8 @@ import { ItemService } from '../services/item.service';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { CardModule } from 'primeng/card'; 
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api'; 
 
 @Component({
   selector: 'app-form',
@@ -15,14 +17,17 @@ import { CardModule } from 'primeng/card';
     FormsModule, 
     ButtonModule, 
     InputTextModule, 
-    CardModule 
+    CardModule,
+    ToastModule
   ],
+  providers: [MessageService],
   templateUrl: './form.html'
 })
 export class Form implements OnInit { 
   private itemService = inject(ItemService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+  private messageService = inject(MessageService)
 
   titulo: string = '';
   descricao: string = '';
@@ -44,14 +49,25 @@ export class Form implements OnInit {
     }
   }
 
-  salvar() {
+salvar() {
+    let salvouComSucesso = false;
+
     if (this.modoEdicao && this.index !== null) {
-      this.itemService.salvarOuAtualizar(this.titulo, this.descricao, this.index);
+      salvouComSucesso = this.itemService.salvarOuAtualizar(this.titulo, this.descricao, this.index);
     } else {
-      this.itemService.salvarOuAtualizar(this.titulo, this.descricao);
+      salvouComSucesso = this.itemService.salvarOuAtualizar(this.titulo, this.descricao);
     }
-    this.router.navigate(['/listar']);
-  }
+
+    if (salvouComSucesso) {
+      this.router.navigate(['/listar']);
+    } else {
+      this.messageService.add({ 
+        severity: 'error', 
+        summary: 'Atenção', 
+        detail: 'Já existe uma tarefa com este título!' 
+      });
+    }
+}
 
   cancelar() {
     this.router.navigate(['/listar']);
