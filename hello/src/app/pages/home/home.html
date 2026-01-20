@@ -1,0 +1,22 @@
+<app-titulo></app-titulo>
+
+<nav class="flex items-center gap-4 p-4 bg-gray-100 mb-4 border-b border-gray-300">
+    
+    <a routerLink="listar" class="text-blue-600 font-bold hover:underline flex items-center gap-2">
+        <i class="pi pi-list"></i> Listagem
+    </a>
+    
+    <a routerLink="novo" class="text-green-600 font-bold hover:underline flex items-center gap-2">
+        <i class="pi pi-plus"></i> Novo Item
+    </a>
+
+    <button 
+        (click)="fazerLogout()" 
+        class="ml-auto text-red-600 font-bold hover:underline flex items-center gap-2 cursor-pointer">
+        <i class="pi pi-power-off"></i> Sair
+    </button>
+</nav>
+
+<div class="p-4">
+    <router-outlet></router-outlet>
+</div>
