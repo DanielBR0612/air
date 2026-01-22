@@ -54,7 +54,7 @@ def listar_itens():
     items = ItemService.listar_items()
     return jsonify([p.to_dict() for p in items]), 200
 
-@item_bp.route("/itens/<int:id>", methods=["PUT"])
+@item_bp.route("/itens/<int:id>", methods=["PATCH"])
 def atualizar_itens(id):
     """
     Atualiza um item existente

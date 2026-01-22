@@ -2,6 +2,7 @@ from flask import Flask
 from config import Config
 from models.item import db
 from routes.item_routes import item_bp
+from routes.auth_routes import auth_bp
 from flask_migrate import Migrate
 from flasgger import Swagger
 from flask_cors import CORS
@@ -20,6 +21,7 @@ swagger = Swagger(app)
 
 # Blueprints
 app.register_blueprint(item_bp)
+app.register_blueprint(auth_bp, url_prefix='/auth')
 
 @app.route("/status")
 def status():
