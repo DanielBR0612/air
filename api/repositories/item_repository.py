@@ -17,8 +17,8 @@ class ItemRepository:
         item_banco = Item.query.get(id)
         
         if item_banco:
-            item_banco.titulo = novos_dados.titulo
-            item_banco.descricao = novos_dados.descricao
+            item_banco.titulo = novos_dados.get('titulo')
+            item_banco.descricao = novos_dados.get('descricao')
             
             db.session.commit()
             return item_banco

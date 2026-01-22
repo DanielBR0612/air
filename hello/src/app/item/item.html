@@ -2,11 +2,11 @@
     <p-card class="bg-white! shadow-md rounded-lg"> 
         <ng-template pTemplate="header">
           <div class="flex items-center justify-between p-card-title px-5 pt-5 pb-3"> 
-            <span class="text-lg font-semibold text-gray-700">{{ titulo }}</span>
+            <span class="text-lg font-semibold text-gray-700">{{ titulo() }}</span>
           </div>
         </ng-template>
   
-        <p class="m-0 text-gray-600 px-5 pb-5">{{ descricao }}</p>
+        <p class="m-0 text-gray-600 px-5 pb-5">{{ descricao() }}</p>
   
     </p-card>
   </div>

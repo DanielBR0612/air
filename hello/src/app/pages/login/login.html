@@ -6,41 +6,63 @@
       <p class="text-gray-500">Entre para acessar o sistema</p>
     </div>
 
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <form (submit)="onSubmit($event)">
       
       <div class="mb-4">
-        <label for="usuario" class="block text-gray-700 font-medium mb-2">Usuário</label>
+        <label for="nome" class="block text-gray-700 font-medium mb-2">Usuário</label>
+        
         <input 
-          id="usuario" 
+          id="nome"
           type="text" 
-          formControlName="usuario"
+          [formField]="loginForm.nome"
           class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
-          [ngClass]="{'border-red-500': loginForm.get('usuario')?.invalid && loginForm.get('usuario')?.touched}"
+          [class.border-red-500]="loginForm.nome().touched() && loginForm.nome().invalid()"
           placeholder="Digite seu usuário"
         >
-        <small *ngIf="loginForm.get('usuario')?.invalid && loginForm.get('usuario')?.touched" class="text-red-500">
-          Usuário é obrigatório.
-        </small>
+        
+        @if (loginForm.nome().touched() && loginForm.nome().invalid()) {
+          <div class="mt-1">
+            @for (error of loginForm.nome().errors(); track error) {
+              <small class="text-red-500 block">
+                {{ error.message }}
+              </small>
+            }
+          </div>
+        }
       </div>
 
       <div class="mb-6">
         <label for="senha" class="block text-gray-700 font-medium mb-2">Senha</label>
+        
         <input 
-          id="senha" 
+          id="senha"
           type="password" 
-          formControlName="senha"
+          [formField]="loginForm.senha"
           class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
+          [class.border-red-500]="loginForm.senha().touched() && loginForm.senha().invalid()"
           placeholder="Digite sua senha"
         >
+        
+        @if (loginForm.senha().touched() && loginForm.senha().invalid()) {
+          <div class="mt-1">
+            @for (error of loginForm.senha().errors(); track error) {
+              <small class="text-red-500 block">
+                {{ error.message }}
+              </small>
+            }
+          </div>
+        }
       </div>
 
       <button 
         type="submit" 
-        [disabled]="loginForm.invalid || loading"
+        [disabled]="loginForm().invalid() || loading()"
         class="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700 transition disabled:bg-gray-400 disabled:cursor-not-allowed flex justify-center items-center gap-2"
       >
-        <i *ngIf="loading" class="pi pi-spin pi-spinner"></i>
-        {{ loading ? 'Entrando...' : 'Entrar' }}
+        @if (loading()) {
+            <i class="pi pi-spin pi-spinner"></i>
+        }
+        {{ loading() ? 'Entrando...' : 'Entrar' }}
       </button>
 
     </form>
