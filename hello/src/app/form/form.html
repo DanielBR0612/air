@@ -1,4 +1,4 @@
-<div class="flex justify-content-center align-items-center min-h-screen surface-ground p-4">
+<div class="flex justify-content-center align-items-center min-h-screen surface-ground p-4 bg-white">
   <p-card [style]="{ width: '100%', maxWidth: '600px' }" styleClass="shadow-4">
     
     <ng-template pTemplate="header">
@@ -12,7 +12,6 @@
       
       <div class="flex flex-column gap-2">
         <label for="titulo" class="font-semibold">Título</label>
-        
         <input 
           pInputText 
           id="titulo" 
@@ -64,10 +63,10 @@
 
         <p-button 
           type="submit" 
-          [label]="modoEdicao() ? 'Atualizar' : 'Salvar'" 
+          [label]="modoEdicao() ? 'Atualizar' : 'Salvar'"
           icon="pi pi-check" 
           [loading]="loading()"
-          [disabled]="itemForm.titulo().invalid() || itemForm.descricao().invalid()">
+          [disabled]="itemForm().invalid()">
         </p-button>
         
       </div>
